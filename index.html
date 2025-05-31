@@ -100,8 +100,25 @@
 
     .story {
       padding: 4rem 2rem;
-      background-color: #2a2a2a;
-      text-align: left;
+      background-image: url('img/bg-gallery.jpg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      position: relative;
+      color: white;
+    }
+
+    .story::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+    }
+
+    .story > .container {
+      position: relative;
+      z-index: 2;
     }
 
     .story h2 {
@@ -201,10 +218,20 @@
       font-size: 0.8rem;
       color: #aaa;
     }
+
+    .section-transition {
+      height: 80px;
+      background: linear-gradient(
+        rgba(31, 31, 31, 0),
+        rgba(31, 31, 31, 0.6),
+        rgba(31, 31, 31, 1)
+      );
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
   </style>
 </head>
 <body>
-  <!-- Navbar -->
   <nav class="navbar">
     <div class="brand" data-bs-toggle="modal" data-bs-target="#biodataModal">
       <img src="img/profile.png" alt="Profile" class="profile-pic" />
@@ -212,7 +239,6 @@
     </div>
   </nav>
 
-  <!-- HERO -->
   <header class="hero">
     <div class="container">
       <h1 class="display-3">Documenting Life<br><span>One Shot at a Time</span></h1>
@@ -224,7 +250,8 @@
     </div>
   </header>
 
-  <!-- Story -->
+  <div class="section-transition"></div>
+
   <section class="story">
     <div class="container">
       <ul class="nav-links justify-end">
@@ -239,11 +266,12 @@
     </div>
   </section>
 
-  <!-- Quote Section -->
+  <div class="section-transition"></div>
+
   <section class="quote-section">
     <div class="quote">
       <p class="quote-text">“More than visuals—it’s a voice.”</p>
-      <p class="author">Alifa Naura Badrunissa </p>
+      <p class="author">Alifa Naura Badrunissa</p>
     </div>
     <div class="about">
       <p>Bagi saya, fotografi dan videografi bukan hanya tentang gambar yang indah atau momen yang terekam.</p>
@@ -252,12 +280,10 @@
     </div>
   </section>
 
-  <!-- Footer -->
   <footer>
     <p>© 2025 Alifa Naura. All rights reserved.</p>
   </footer>
 
-  <!-- Modal Biodata -->
   <div class="modal fade" id="biodataModal" tabindex="-1" aria-labelledby="biodataModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content bg-dark text-white">
@@ -279,10 +305,7 @@
     </div>
   </div>
 
-  <!-- Bootstrap JS -->
   <script src="js/bootstrap.bundle.min.js"></script>
-
-  <!-- JavaScript Gallery -->
   <script>
     const galleryData = {
       fotografi: {
@@ -333,8 +356,7 @@
         link.classList.remove('active');
       });
 
-      const clickedLink = [...document.querySelectorAll('.nav-links .nav-link')]
-                          .find(link => link.textContent.toLowerCase() === type);
+      const clickedLink = [...document.querySelectorAll('.nav-links .nav-link')].find(link => link.textContent.toLowerCase() === type);
       if(clickedLink) clickedLink.classList.add('active');
 
       const data = galleryData[type];
@@ -342,17 +364,14 @@
       document.getElementById("gallery-description").innerText = data.desc;
 
       const galleryContainer = document.getElementById("gallery-container");
-      galleryContainer.innerHTML = data.items
-        .map(
-          (item) =>
-            `<div class="col-md-4 mb-4">
-              <div class="card">
-                <img src="${item.src}" alt="${item.caption}" />
-                <p>${item.caption}</p>
-              </div>
-            </div>`
-        )
-        .join("");
+      galleryContainer.innerHTML = data.items.map(item =>
+        `<div class="col-md-4 mb-4">
+          <div class="card">
+            <img src="${item.src}" alt="${item.caption}" />
+            <p>${item.caption}</p>
+          </div>
+        </div>`
+      ).join("");
     }
 
     window.onload = () => showGallery("fotografi");
